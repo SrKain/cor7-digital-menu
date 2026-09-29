@@ -13,7 +13,10 @@ export function MenuSection({
   let lastGroup: string | undefined;
 
   return (
-    <section id={`cat-${category.id}`} className="scroll-mt-24 px-4 pt-8 pb-2">
+    <section
+      id={`cat-${category.id}`}
+      className="animate-fade-in-up scroll-mt-[104px] px-4 pt-6 pb-2"
+    >
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-2">
         <h2 className="font-serif text-2xl font-bold tracking-tight text-foreground">
           {category.name}

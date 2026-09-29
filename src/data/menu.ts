@@ -874,3 +874,36 @@ export const menu: readonly MenuCategory[] = [
     ],
   },
 ];
+
+export type CategoryGroup = {
+  name: "Comidas" | "Bebidas" | "Bar";
+  categoryIds: readonly string[];
+};
+
+export const categoryGroups: readonly CategoryGroup[] = [
+  {
+    name: "Comidas",
+    categoryIds: [
+      "pratos-executivos",
+      "pratos-especiais",
+      "cardapio-de-inverno",
+      "porcoes",
+      "pasteis",
+      "sanduiches",
+      "hamburgueres",
+      "sobremesas",
+    ],
+  },
+  {
+    name: "Bebidas",
+    categoryIds: ["bebidas", "sucos", "drinks-sem-alcool", "cafes"],
+  },
+  {
+    name: "Bar",
+    categoryIds: ["chopp", "cervejas", "baldes", "drinks", "doses", "vinhos"],
+  },
+] as const;
+
+export const orderedMenu: readonly MenuCategory[] = categoryGroups
+  .flatMap((group) => group.categoryIds.map((id) => menu.find((category) => category.id === id)))
+  .filter((category): category is MenuCategory => category !== undefined);

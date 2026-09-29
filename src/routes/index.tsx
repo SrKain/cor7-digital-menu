@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { menu, type MenuCategory } from "../data/menu";
+import { orderedMenu, type MenuCategory } from "../data/menu";
 import { Header } from "../components/Header";
 import { CategoryBar } from "../components/CategoryBar";
+import { CategorySheet } from "../components/CategorySheet";
 import { MenuSection } from "../components/MenuSection";
 import { Footer } from "../components/Footer";
 import { CartBar } from "../components/CartBar";
@@ -19,16 +20,20 @@ function normalizeText(text: string): string {
 }
 
 function MenuIndexPage() {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const initialCatId = menu[0]?.id ?? "";
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const initialCatId = orderedMenu[0]?.id ?? "";
   const [activeCategory, setActiveCategory] = useState<string>(initialCatId);
   const isScrollingToRef = useRef(false);
 
   const query = normalizeText(searchQuery.trim());
+  const isSearching = isSearchOpen || query.length > 0;
 
   const filteredMenu: readonly MenuCategory[] = useMemo(() => {
-    if (!query) return menu;
-    return menu
+    if (!query) return orderedMenu;
+    return orderedMenu
       .map((cat) => {
         const items = cat.items.filter((item) => {
           const matchName = normalizeText(item.name).includes(query);
@@ -47,6 +52,10 @@ function MenuIndexPage() {
       .filter((cat) => cat.items.length > 0);
   }, [query]);
 
+  const totalResultsCount = useMemo(() => {
+    return filteredMenu.reduce((sum, cat) => sum + cat.items.length, 0);
+  }, [filteredMenu]);
+
   // Keep active category synced if current active is filtered out
   useEffect(() => {
     if (filteredMenu.length > 0) {
@@ -58,9 +67,9 @@ function MenuIndexPage() {
     }
   }, [filteredMenu, activeCategory]);
 
-  // Track active section via IntersectionObserver when scrolling
+  // Track active section via IntersectionObserver when scrolling (only when not in search)
   useEffect(() => {
-    if (typeof window === "undefined" || filteredMenu.length === 0) return;
+    if (typeof window === "undefined" || isSearching || filteredMenu.length === 0) return;
 
     const handleIntersection: IntersectionObserverCallback = (entries) => {
       if (isScrollingToRef.current) return;
@@ -75,7 +84,7 @@ function MenuIndexPage() {
 
     const observer = new IntersectionObserver(handleIntersection, {
       root: null,
-      rootMargin: "-20% 0px -65% 0px",
+      rootMargin: "-104px 0px -65% 0px",
       threshold: 0,
     });
 
@@ -85,7 +94,7 @@ function MenuIndexPage() {
     }
 
     return () => observer.disconnect();
-  }, [filteredMenu]);
+  }, [filteredMenu, isSearching]);
 
   const handleSelectCategory = (id: string) => {
     setActiveCategory(id);
@@ -99,18 +108,58 @@ function MenuIndexPage() {
     }
   };
 
+  const handleOpenSearch = () => {
+    setIsSearchOpen(true);
+  };
+
+  const handleCloseSearch = () => {
+    setIsSearchOpen(false);
+    setSearchQuery("");
+  };
+
   return (
     <div className="mx-auto flex min-h-screen max-w-lg flex-col bg-background text-foreground antialiased pb-28">
-      <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
-      <CategoryBar
-        categories={filteredMenu}
-        activeId={activeCategory}
-        onSelectCategory={handleSelectCategory}
+      <Header
+        isSearchOpen={isSearchOpen}
+        searchQuery={searchQuery}
+        onOpenSearch={handleOpenSearch}
+        onCloseSearch={handleCloseSearch}
+        onSearchChange={setSearchQuery}
       />
+
+      {!isSearching ? (
+        <CategoryBar
+          categories={filteredMenu}
+          activeId={activeCategory}
+          onSelectCategory={handleSelectCategory}
+          onOpenSheet={() => setIsSheetOpen(true)}
+        />
+      ) : null}
+
+      {isSearching ? (
+        <div className="flex items-center justify-between border-b border-border bg-secondary/30 px-4 py-2.5">
+          <p className="text-xs font-medium text-muted-foreground">
+            {totalResultsCount === 0
+              ? "Nenhum resultado encontrado"
+              : totalResultsCount === 1
+                ? "1 resultado encontrado"
+                : `${totalResultsCount} resultados encontrados`}
+          </p>
+          {searchQuery ? (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="text-xs font-semibold text-primary hover:underline"
+            >
+              Limpar termo
+            </button>
+          ) : null}
+        </div>
+      ) : null}
 
       <main className="flex-1">
         {filteredMenu.length === 0 ? (
-          <div className="px-4 py-16 text-center">
+          <div className="animate-fade-in-up px-4 py-16 text-center">
             <p className="font-serif text-lg font-semibold text-foreground">
               Nenhum item encontrado
             </p>
@@ -120,10 +169,10 @@ function MenuIndexPage() {
             </p>
             <button
               type="button"
-              onClick={() => setSearchQuery("")}
+              onClick={handleCloseSearch}
               className="mt-4 inline-flex min-h-11 items-center justify-center rounded-full bg-secondary px-5 text-sm font-semibold text-foreground hover:bg-secondary/80"
             >
-              Limpar busca
+              Ver cardápio completo
             </button>
           </div>
         ) : (
@@ -132,6 +181,14 @@ function MenuIndexPage() {
           ))
         )}
       </main>
+
+      <CategorySheet
+        isOpen={isSheetOpen}
+        onOpenChange={setIsSheetOpen}
+        categories={orderedMenu}
+        activeId={activeCategory}
+        onSelectCategory={handleSelectCategory}
+      />
 
       <Footer />
       <CartBar />
