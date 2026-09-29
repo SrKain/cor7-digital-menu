@@ -8,7 +8,7 @@ Cardápio digital mobile-first do restaurante Cor7, com montagem de pedido e env
 2. **Barra de categorias** logo abaixo, com rolagem lateral e fixa na tela. Ao tocar, a página rola até a seção; a categoria visível fica em vermelho.
 3. **Cards de itens** apenas com texto: nome, descrição curta, preço e um botão vermelho "Adicionar" que vira o controle de quantidade (+ / −) depois do primeiro toque.
 4. **Itens com escolha** (ex.: Coca Cola Normal/Zero, sabores de caipirinha) abrem um seletor de uma opção antes de adicionar.
-5. **Selos discretos** em itens com aviso (ex.: "Sábados, 11h às 15h"), sem impedir a compra.
+5. **Selos discretos** em itens com aviso (ex.: "Sábados, 11hàs 15h"), sem impedir a compra.
 6. **Aviso de taxa de rolha (R$ 20,00)** em destaque no topo da categoria Vinhos.
 7. **Barra inferior fixa** quando há itens: "Ver pedido (N itens) · R$ total".
 8. **Rodapé**: "Venda de bebidas alcoólicas proibida para menores de 18 anos."
