@@ -78,8 +78,18 @@ export const menu: readonly MenuCategory[] = [
         note: "Sábados, 11h às 15h",
       },
       { id: "extra-ovo-frito", name: "Ovo Frito", price: 1.5, group: "Extras dos Executivos" },
-      { id: "extra-salada-mista", name: "Salada Mista", price: 2.9, group: "Extras dos Executivos" },
-      { id: "extra-batata-frita", name: "Batata Frita", price: 6.9, group: "Extras dos Executivos" },
+      {
+        id: "extra-salada-mista",
+        name: "Salada Mista",
+        price: 2.9,
+        group: "Extras dos Executivos",
+      },
+      {
+        id: "extra-batata-frita",
+        name: "Batata Frita",
+        price: 6.9,
+        group: "Extras dos Executivos",
+      },
       {
         id: "extra-carne-do-executivo",
         name: "Carne do Executivo",
@@ -233,8 +243,7 @@ export const menu: readonly MenuCategory[] = [
         id: "caldo-verde",
         name: "Caldo Verde",
         price: 22.0,
-        description:
-          "Mandioca, batata, couve manteiga, calabresa, bacon, cheiro verde e torradas",
+        description: "Mandioca, batata, couve manteiga, calabresa, bacon, cheiro verde e torradas",
       },
       {
         id: "sopa-de-feijao",
@@ -584,8 +593,7 @@ export const menu: readonly MenuCategory[] = [
         id: "moscow-mule",
         name: "Moscow Mule",
         price: 24.9,
-        description:
-          "Vodka, xarope de gengibre, limão, hortelã, água com gás e espuma de gengibre",
+        description: "Vodka, xarope de gengibre, limão, hortelã, água com gás e espuma de gengibre",
       },
       {
         id: "cosmopolitan",
