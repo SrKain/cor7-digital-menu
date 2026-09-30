@@ -27,6 +27,7 @@ function MenuIndexPage() {
   const initialCatId = orderedMenu[0]?.id ?? "";
   const [activeCategory, setActiveCategory] = useState<string>(initialCatId);
   const isScrollingToRef = useRef(false);
+  const scrollTimeoutRef = useRef<number | null>(null);
 
   const query = normalizeText(searchQuery.trim());
   const isSearching = isSearchOpen || query.length > 0;
@@ -98,14 +99,22 @@ function MenuIndexPage() {
 
   const handleSelectCategory = (id: string) => {
     setActiveCategory(id);
-    const element = document.getElementById(`cat-${id}`);
-    if (element) {
-      isScrollingToRef.current = true;
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-      window.setTimeout(() => {
-        isScrollingToRef.current = false;
-      }, 700);
+    if (scrollTimeoutRef.current !== null) {
+      window.clearTimeout(scrollTimeoutRef.current);
     }
+    isScrollingToRef.current = true;
+
+    window.setTimeout(() => {
+      const element = document.getElementById(`cat-${id}`);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 0);
+
+    scrollTimeoutRef.current = window.setTimeout(() => {
+      isScrollingToRef.current = false;
+      scrollTimeoutRef.current = null;
+    }, 850);
   };
 
   const handleOpenSearch = () => {

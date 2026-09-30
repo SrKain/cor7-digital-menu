@@ -20,8 +20,10 @@ export function CategorySheet({
   const categoryMap = new Map(categories.map((cat) => [cat.id, cat]));
 
   const handleSelect = (id: string) => {
-    onSelectCategory(id);
     onOpenChange(false);
+    window.setTimeout(() => {
+      onSelectCategory(id);
+    }, 50);
   };
 
   return (

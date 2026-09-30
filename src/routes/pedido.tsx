@@ -1,6 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, Trash2, MessageSquareText } from "lucide-react";
+import { ArrowLeft, Trash2, MessageSquareText, ExternalLink } from "lucide-react";
 import {
   useCartLines,
   cartTotal,
@@ -27,17 +27,9 @@ function OrderLineRow({ line }: { line: CartLine }) {
   return (
     <div className="flex items-start justify-between gap-3 border-b border-border py-4">
       <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-2">
-          <p className="font-medium text-foreground">{line.name}</p>
-          <button
-            type="button"
-            onClick={() => removeLine(line.key)}
-            aria-label={`Remover ${line.name} do pedido`}
-            className="flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-destructive"
-          >
-            <Trash2 className="h-4 w-4" />
-          </button>
-        </div>
+        <p className="text-sm font-semibold leading-snug text-foreground break-words">
+          {line.name}
+        </p>
         {line.option ? (
           <p className="mt-0.5 text-xs text-muted-foreground">Opção: {line.option}</p>
         ) : null}
@@ -49,13 +41,21 @@ function OrderLineRow({ line }: { line: CartLine }) {
         </p>
       </div>
 
-      <div className="shrink-0 pt-1">
+      <div className="ml-auto flex shrink-0 items-center gap-1.5 pt-0.5">
         <QuantityStepper
           quantity={line.quantity}
           onIncrement={() => incrementLine(line.key)}
           onDecrement={() => decrementLine(line.key)}
           label={line.option ? `${line.name} (${line.option})` : line.name}
         />
+        <button
+          type="button"
+          onClick={() => removeLine(line.key)}
+          aria-label={`Remover ${line.name} do pedido`}
+          className="flex h-11 w-11 min-h-11 min-w-[44px] shrink-0 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-secondary hover:text-destructive active:scale-95"
+        >
+          <Trash2 className="h-4 w-4" aria-hidden="true" />
+        </button>
       </div>
     </div>
   );
@@ -74,47 +74,36 @@ function OrderDetailsForm({ details, onChange }: OrderDetailsFormProps) {
       </h3>
 
       <div>
+        <label htmlFor="customer-name" className="block text-xs font-medium text-foreground">
+          Seu nome
+        </label>
+        <input
+          id="customer-name"
+          type="text"
+          maxLength={60}
+          value={details.name}
+          onChange={(event) => onChange({ ...details, name: event.target.value })}
+          placeholder="Ex.: Carlos Santos"
+          className="mt-1.5 h-11 w-full rounded-xl border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        />
+      </div>
+
+      <div>
         <label htmlFor="notes" className="block text-xs font-medium text-foreground">
           Observações gerais
         </label>
         <textarea
           id="notes"
+          maxLength={300}
           value={details.notes}
           onChange={(event) => onChange({ ...details, notes: event.target.value })}
-          placeholder="Ex.: sem cebola, ponto da carne, sem gelo..."
-          rows={2}
+          placeholder="Ex.: sem cebola, ponto da carne bem passado, sem gelo..."
+          rows={3}
           className="mt-1.5 w-full rounded-xl border border-input bg-background p-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         />
-      </div>
-
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <div>
-          <label htmlFor="customer-name" className="block text-xs font-medium text-foreground">
-            Seu nome
-          </label>
-          <input
-            id="customer-name"
-            type="text"
-            value={details.name}
-            onChange={(event) => onChange({ ...details, name: event.target.value })}
-            placeholder="Nome para identificação"
-            className="mt-1.5 h-11 w-full rounded-xl border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="table-number" className="block text-xs font-medium text-foreground">
-            Mesa / Balcão
-          </label>
-          <input
-            id="table-number"
-            type="text"
-            value={details.table}
-            onChange={(event) => onChange({ ...details, table: event.target.value })}
-            placeholder="Ex.: Mesa 4, Balcão 2"
-            className="mt-1.5 h-11 w-full rounded-xl border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          />
-        </div>
+        <p className="mt-1 text-right text-[10px] text-muted-foreground">
+          {details.notes.length}/300 caracteres
+        </p>
       </div>
     </div>
   );
@@ -124,18 +113,19 @@ type OrderPreviewProps = {
   cart: readonly CartLine[];
   details: OrderDetails;
   onEdit: () => void;
+  onReset: () => void;
 };
 
-function OrderPreview({ cart, details, onEdit }: OrderPreviewProps) {
+function OrderPreview({ cart, details, onEdit, onReset }: OrderPreviewProps) {
   const message = buildOrderMessage(cart, details);
   const whatsappUrl = buildWhatsAppUrl(message);
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-border bg-card p-4">
+      <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
         <div className="flex items-center gap-2 pb-3 text-sm font-semibold text-foreground">
-          <MessageSquareText className="h-4 w-4 text-primary" />
-          <span>Mensagem a ser enviada</span>
+          <MessageSquareText className="h-4 w-4 text-primary" aria-hidden="true" />
+          <span>Mensagem formatada para WhatsApp</span>
         </div>
         <pre className="whitespace-pre-wrap rounded-xl border border-border bg-secondary/60 p-4 font-sans text-xs leading-relaxed text-foreground sm:text-sm">
           {message}
@@ -147,32 +137,34 @@ function OrderPreview({ cart, details, onEdit }: OrderPreviewProps) {
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex min-h-12 w-full items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+          className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 active:scale-98"
         >
-          Pedir pelo WhatsApp
+          <span>Pedir pelo WhatsApp</span>
+          <ExternalLink className="h-4 w-4" aria-hidden="true" />
         </a>
 
         <button
           type="button"
           onClick={onEdit}
-          className="flex min-h-12 w-full items-center justify-center rounded-full border border-input bg-background px-5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
+          className="flex min-h-12 w-full items-center justify-center rounded-full border border-input bg-background px-5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary active:scale-98"
         >
           Editar pedido
         </button>
 
-        <Link
-          to="/"
-          onClick={() => clearCart()}
-          className="flex min-h-12 w-full items-center justify-center rounded-full text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+        <button
+          type="button"
+          onClick={onReset}
+          className="flex min-h-11 w-full items-center justify-center rounded-full text-xs font-medium text-muted-foreground transition-colors hover:text-foreground hover:underline"
         >
           Começar novo pedido
-        </Link>
+        </button>
       </div>
     </div>
   );
 }
 
 function PedidoPage() {
+  const navigate = useNavigate();
   const cart = useCartLines();
   const count = cartCount(cart);
   const total = cartTotal(cart);
@@ -181,8 +173,13 @@ function PedidoPage() {
   const [details, setDetails] = useState<OrderDetails>({
     notes: "",
     name: "",
-    table: "",
   });
+
+  const handleResetAll = () => {
+    clearCart();
+    setDetails({ notes: "", name: "" });
+    navigate({ to: "/" });
+  };
 
   if (count === 0) {
     return (
@@ -274,21 +271,26 @@ function PedidoPage() {
               <button
                 type="button"
                 onClick={() => setStep("previa")}
-                className="flex min-h-12 w-full items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
+                className="flex min-h-12 w-full items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 active:scale-98"
               >
                 Confirmar pedido ({formatPrice(total)})
               </button>
 
               <Link
                 to="/"
-                className="flex min-h-12 w-full items-center justify-center rounded-full border border-input bg-background px-5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
+                className="flex min-h-12 w-full items-center justify-center rounded-full border border-input bg-background px-5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary active:scale-98"
               >
                 Voltar ao cardápio
               </Link>
             </div>
           </div>
         ) : (
-          <OrderPreview cart={cart} details={details} onEdit={() => setStep("conferencia")} />
+          <OrderPreview
+            cart={cart}
+            details={details}
+            onEdit={() => setStep("conferencia")}
+            onReset={handleResetAll}
+          />
         )}
       </main>
 
