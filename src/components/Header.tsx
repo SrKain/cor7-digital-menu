@@ -1,4 +1,5 @@
 import { config } from "../config";
+import cor7Logo from "../assets/cor7-logo.asset.json";
 import { CategoryBar } from "./CategoryBar";
 
 type HeaderProps = {
