@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import type { MenuItem } from "../data/menu";
 import { formatPrice } from "../lib/format";
 import { addLine, decrementLine, useCartLines } from "../lib/cart-store";
@@ -13,8 +14,12 @@ export function MenuItemCard({ item }: { item: MenuItem }) {
   const hasOptions = Boolean(item.options?.length);
 
   function increment() {
-    if (hasOptions) setSheetOpen(true);
-    else addLine(item);
+    if (hasOptions) {
+      setSheetOpen(true);
+    } else {
+      addLine(item);
+      toast.success(`✓ ${item.name} adicionado`);
+    }
   }
 
   function decrement() {
@@ -65,6 +70,7 @@ export function MenuItemCard({ item }: { item: MenuItem }) {
           onClose={() => setSheetOpen(false)}
           onConfirm={(option) => {
             addLine(item, option);
+            toast.success(`✓ ${item.name} adicionado`);
             setSheetOpen(false);
           }}
         />
