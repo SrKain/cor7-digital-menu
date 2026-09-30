@@ -5,6 +5,7 @@ import { cartTotal, type CartLine } from "./cart-store";
 export type OrderDetails = {
   notes: string;
   name: string;
+  table: string;
 };
 
 export function buildOrderMessage(cart: readonly CartLine[], details: OrderDetails): string {
@@ -21,7 +22,10 @@ export function buildOrderMessage(cart: readonly CartLine[], details: OrderDetai
   if (notes) info.push(`Observações: ${notes}`);
 
   const name = details.name.trim();
-  if (name) info.push(`Nome: ${name}`);
+  const table = details.table.trim();
+  if (name && table) info.push(`Nome: ${name} | Mesa: ${table}`);
+  else if (name) info.push(`Nome: ${name}`);
+  else if (table) info.push(`Mesa: ${table}`);
 
   if (info.length > 0) blocks.push(info.join("\n"));
 

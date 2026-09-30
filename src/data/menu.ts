@@ -78,18 +78,8 @@ export const menu: readonly MenuCategory[] = [
         note: "Sábados, 11h às 15h",
       },
       { id: "extra-ovo-frito", name: "Ovo Frito", price: 1.5, group: "Extras dos Executivos" },
-      {
-        id: "extra-salada-mista",
-        name: "Salada Mista",
-        price: 2.9,
-        group: "Extras dos Executivos",
-      },
-      {
-        id: "extra-batata-frita",
-        name: "Batata Frita",
-        price: 6.9,
-        group: "Extras dos Executivos",
-      },
+      { id: "extra-salada-mista", name: "Salada Mista", price: 2.9, group: "Extras dos Executivos" },
+      { id: "extra-batata-frita", name: "Batata Frita", price: 6.9, group: "Extras dos Executivos" },
       {
         id: "extra-carne-do-executivo",
         name: "Carne do Executivo",
@@ -243,7 +233,8 @@ export const menu: readonly MenuCategory[] = [
         id: "caldo-verde",
         name: "Caldo Verde",
         price: 22.0,
-        description: "Mandioca, batata, couve manteiga, calabresa, bacon, cheiro verde e torradas",
+        description:
+          "Mandioca, batata, couve manteiga, calabresa, bacon, cheiro verde e torradas",
       },
       {
         id: "sopa-de-feijao",
@@ -593,7 +584,8 @@ export const menu: readonly MenuCategory[] = [
         id: "moscow-mule",
         name: "Moscow Mule",
         price: 24.9,
-        description: "Vodka, xarope de gengibre, limão, hortelã, água com gás e espuma de gengibre",
+        description:
+          "Vodka, xarope de gengibre, limão, hortelã, água com gás e espuma de gengibre",
       },
       {
         id: "cosmopolitan",
@@ -874,36 +866,3 @@ export const menu: readonly MenuCategory[] = [
     ],
   },
 ];
-
-export type CategoryGroup = {
-  name: "Comidas" | "Bebidas" | "Bar";
-  categoryIds: readonly string[];
-};
-
-export const categoryGroups: readonly CategoryGroup[] = [
-  {
-    name: "Comidas",
-    categoryIds: [
-      "pratos-executivos",
-      "pratos-especiais",
-      "cardapio-de-inverno",
-      "porcoes",
-      "pasteis",
-      "sanduiches",
-      "hamburgueres",
-      "sobremesas",
-    ],
-  },
-  {
-    name: "Bebidas",
-    categoryIds: ["bebidas", "sucos", "drinks-sem-alcool", "cafes"],
-  },
-  {
-    name: "Bar",
-    categoryIds: ["chopp", "cervejas", "baldes", "drinks", "doses", "vinhos"],
-  },
-] as const;
-
-export const orderedMenu: readonly MenuCategory[] = categoryGroups
-  .flatMap((group) => group.categoryIds.map((id) => menu.find((category) => category.id === id)))
-  .filter((category): category is MenuCategory => category !== undefined);

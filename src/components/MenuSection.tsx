@@ -13,28 +13,21 @@ export function MenuSection({
   let lastGroup: string | undefined;
 
   return (
-    <section
-      id={`cat-${category.id}`}
-      className="animate-fade-in-up scroll-mt-[104px] px-4 pt-6 pb-2"
-    >
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-2">
-        <h2 className="font-serif text-2xl font-bold tracking-tight text-foreground">
-          {category.name}
-        </h2>
-        {category.note ? (
-          <span className="inline-block rounded-md bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
-            {category.note}
-          </span>
-        ) : null}
-      </div>
-      <div className="mt-1">
+    <section id={`cat-${category.id}`} className="scroll-mt-32 px-4 pt-8">
+      <h2 className="font-serif text-2xl">{category.name}</h2>
+      {category.note ? (
+        <p className="mt-2 inline-block rounded-md bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
+          {category.note}
+        </p>
+      ) : null}
+      <div className="mt-2">
         {items.map((item) => {
           const showGroup = item.group && item.group !== lastGroup;
           lastGroup = item.group;
           return (
             <div key={item.id}>
               {showGroup ? (
-                <p className="pt-5 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                   {item.group}
                 </p>
               ) : null}
