@@ -43,7 +43,7 @@ export function MenuItemCard({ item }: { item: MenuItem }) {
               type="button"
               onClick={increment}
               aria-label={`Adicionar ${item.name} ao pedido`}
-              className="flex min-h-11 min-w-[44px] items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 active:scale-95"
+              className="flex h-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 active:scale-95"
             >
               Adicionar
             </button>

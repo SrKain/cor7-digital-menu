@@ -36,7 +36,8 @@ export function CategoryBar({ categories, activeCategoryId, onSelectAll }: Categ
             type="button"
             onClick={() => scrollTo(category.id)}
             aria-current={isActive ? "true" : undefined}
-            className={`flex h-11 min-h-11 min-w-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-full px-4 text-xs font-medium transition-all active:scale-95 ${
+            aria-label={`Categoria ${category.name}`}
+            className={`flex h-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-full px-4 text-xs font-medium transition-all active:scale-95 ${
               isActive
                 ? "bg-primary font-semibold text-primary-foreground shadow-xs"
                 : "bg-white/10 text-white/80 hover:bg-white/20 hover:text-white"
@@ -52,7 +53,7 @@ export function CategoryBar({ categories, activeCategoryId, onSelectAll }: Categ
         type="button"
         onClick={handleAllClick}
         aria-label="Ver todas as categorias"
-        className="flex h-11 min-h-11 min-w-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-full border border-white/20 bg-white/5 px-4 text-xs font-medium text-white/90 transition-all hover:bg-white/15 hover:text-white active:scale-95"
+        className="flex h-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center whitespace-nowrap rounded-full border border-white/20 bg-white/5 px-4 text-xs font-medium text-white/90 transition-all hover:bg-white/15 hover:text-white active:scale-95"
       >
         Todas
       </button>

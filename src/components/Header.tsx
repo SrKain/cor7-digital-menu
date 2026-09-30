@@ -1,3 +1,4 @@
+import logoImg from "../assets/images/7d5559dc-9f3e-43d9-8d6d-35c40ae29092_1000150559.jpeg";
 import { CategoryBar } from "./CategoryBar";
 
 type HeaderProps = {
@@ -16,14 +17,14 @@ export function Header({
   onSelectAll,
 }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-30 border-b border-[#222222] bg-[#111111] text-white shadow-md">
+    <header className="sticky top-0 z-30 border-b border-neutral-900 bg-black text-white shadow-md">
       <div className="flex items-center gap-3 px-4 py-3">
         <img
-          src="/cor7-logo.jpg"
+          src={logoImg}
           alt="Cor7 Gastronomia"
           width={48}
           height={48}
-          className="h-12 w-12 shrink-0 rounded-xl bg-black object-contain shadow-xs"
+          className="h-12 w-12 shrink-0 object-contain"
         />
         <div className="relative min-w-0 flex-1">
           <input
