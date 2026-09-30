@@ -80,8 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Cor7 — Cardápio Digital" },
       {
         name: "description",
-        content:
-          "Cardápio digital do restaurante Cor7: monte seu pedido e envie pelo WhatsApp.",
+        content: "Cardápio digital do restaurante Cor7: monte seu pedido e envie pelo WhatsApp.",
       },
       { property: "og:title", content: "Cor7 — Cardápio Digital" },
       {

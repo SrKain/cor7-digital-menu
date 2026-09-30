@@ -31,18 +31,19 @@ export function MenuItemCard({ item }: { item: MenuItem }) {
             <p className="mt-1 text-sm leading-snug text-muted-foreground">{item.description}</p>
           ) : null}
           {item.note ? (
-            <span className="mt-2 inline-block rounded-full border border-primary px-2 py-0.5 text-[11px] font-medium text-primary">
+            <span className="mt-2 inline-block rounded-full border border-primary px-2.5 py-0.5 text-[11px] font-medium text-primary">
               {item.note}
             </span>
           ) : null}
-          <p className="mt-2 text-sm font-semibold">{formatPrice(item.price)}</p>
+          <p className="mt-2 text-sm font-semibold text-foreground">{formatPrice(item.price)}</p>
         </div>
-        <div className="shrink-0">
+        <div className="shrink-0 pt-0.5">
           {quantity === 0 ? (
             <button
               type="button"
               onClick={increment}
-              className="min-h-11 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground"
+              aria-label={`Adicionar ${item.name} ao pedido`}
+              className="flex min-h-11 min-w-[44px] items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 active:scale-95"
             >
               Adicionar
             </button>

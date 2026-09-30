@@ -1,0 +1,6 @@
+{
+  "name": "Cor7 Digital Menu",
+  "description": "Cardápio digital para Cor7 com pedidos via WhatsApp, seleção de adicionais/opções e carrinho integrado.",
+  "permissions": [],
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

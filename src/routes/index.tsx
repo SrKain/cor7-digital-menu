@@ -72,6 +72,7 @@ function MenuPage() {
         onQueryChange={setQuery}
         activeCategoryId={activeCategoryId}
         categories={sections.map((section) => section.category)}
+        onSelectAll={() => setQuery("")}
       />
 
       <main>

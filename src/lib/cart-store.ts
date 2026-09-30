@@ -6,7 +6,7 @@ export type CartLine = {
   itemId: string;
   name: string;
   price: number;
-  option?: string;
+  option?: string | undefined;
   quantity: number;
 };
 
@@ -37,10 +37,7 @@ export function addLine(item: MenuItem, option?: string) {
   const existing = lines.find((line) => line.key === key);
   lines = existing
     ? lines.map((line) => (line.key === key ? { ...line, quantity: line.quantity + 1 } : line))
-    : [
-        ...lines,
-        { key, itemId: item.id, name: item.name, price: item.price, option, quantity: 1 },
-      ];
+    : [...lines, { key, itemId: item.id, name: item.name, price: item.price, option, quantity: 1 }];
   emit();
 }
 
@@ -52,9 +49,7 @@ export function decrementLine(key: string) {
 }
 
 export function incrementLine(key: string) {
-  lines = lines.map((line) =>
-    line.key === key ? { ...line, quantity: line.quantity + 1 } : line,
-  );
+  lines = lines.map((line) => (line.key === key ? { ...line, quantity: line.quantity + 1 } : line));
   emit();
 }
 
