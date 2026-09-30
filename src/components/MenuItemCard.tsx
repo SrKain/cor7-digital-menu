@@ -28,7 +28,10 @@ export function MenuItemCard({ item }: { item: MenuItem }) {
   }
 
   return (
-    <article className="border-b border-border py-4">
+    <article
+      id={`item-${item.id}`}
+      className="scroll-mt-36 rounded-xl border-b border-border p-2 -mx-2 transition-all duration-300"
+    >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <h3 className="font-serif text-base leading-snug">{item.name}</h3>
